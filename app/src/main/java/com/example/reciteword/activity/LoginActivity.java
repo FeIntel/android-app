@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
                     tvError.setText("用户名或密码错误");
                 }
             } else {
-                tvError.setText("用户名或密码错误");
+                tvError.setText("用户名和密码必须至少5个字符");
             }
         });
 
@@ -61,7 +61,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean validateInput(String username, String password) {
         if (null == username || null == password || username.length() < 5 || password.length() < 5) {
-            tvError.setText("用户名和密码必须至少5个字符");
             return false;
         }
         return true;

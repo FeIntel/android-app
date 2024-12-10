@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * 初始化wordList, 并管理wordList,比如获取总数组长度
+ * 初始化wordList(从txt文件中读取单词), 并管理wordList,比如获取总数组长度.根据下标, 获取对应的word的各个属性.
  */
 public class Data {
     private static List<Word> wordList = new ArrayList<>();
@@ -35,20 +35,19 @@ public class Data {
             e.printStackTrace();
         }
     }
-    private static int numCount = 0,randNum = getNum(91);
+    private static int numCount = 0, nowWordIndex = getRandomNum(91);
     public static void setNumCount(int numCount){
         Data.numCount = numCount;
     }
 
-    public static void setRandNum(){
-        Data.randNum = getNum(91);
+    public static void setNewWord(){
+        Data.nowWordIndex = getRandomNum(91);
     }
 
     public static int getNumCount(){return numCount;}
-    public static int getRandNum(){return randNum;}
+    public static int getNowWordIndex(){return nowWordIndex;}
     public static String getWord(int cnt){
             return wordList.get(cnt).getWord();
-
     }
     public static String getPron(int cnt){
         return wordList.get(cnt).getPron();
@@ -60,11 +59,12 @@ public class Data {
         return wordList.get(cnt).getShowNum();
     }
 
-    private static int getNum(int endNum){
+    public static int getRandomNum(int endNum){
         if(endNum > 0){
             Random random = new Random();
             return random.nextInt(endNum);
         }
         return 0;
     }
+
 }

@@ -17,7 +17,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText etNewUsername, etNewPassword, etConfirmPassword;
     private TextView tvError, tvToLogin;
     private Button btnRegister;
-    private DatabaseHelper databaseHelper=new DatabaseHelper(this);
+    private DatabaseHelper databaseHelper = new DatabaseHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +37,10 @@ public class RegisterActivity extends AppCompatActivity {
             String confirmPassword = etConfirmPassword.getText().toString();
 
             if (validateInput(username, password, confirmPassword)) {
-                //新增用户到数据库
-                databaseHelper.addUser(username, password);
-                Toast.makeText(this, "注册成功", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this, LoginActivity.class));
+                    //新增用户到数据库
+                    databaseHelper.addUser(username, password);
+                    Toast.makeText(this, "注册成功", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(this, LoginActivity.class));
             }
         });
 
@@ -50,7 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private boolean validateInput(String username, String password, String confirmPassword) {
-        if (username.length() < 5 || password.length() < 5) {
+        if (username == null || password == null || username.length() < 5 || password.length() < 5) {
             tvError.setText("用户名和密码必须至少5个字符");
             return false;
         }

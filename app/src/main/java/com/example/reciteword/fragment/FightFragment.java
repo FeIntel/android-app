@@ -44,6 +44,6 @@ public class FightFragment extends Fragment {
             }
         };
         Timer timer = new Timer();
-        timer.schedule(task,3500);
+        timer.schedule(task,2000);
     }
 }

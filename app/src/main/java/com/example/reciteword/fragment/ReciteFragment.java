@@ -30,6 +30,7 @@ public class ReciteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_recite, container, false);
+
     }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -41,14 +42,9 @@ public class ReciteFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         sharedPre = getActivity().getSharedPreferences("t",Context.MODE_PRIVATE);
         editor = sharedPre.edit();
+        showNextWord();
 
-        wordText.setText(Data.getWord(Data.getRandNum()));
-        showTextByFlag(flag);
-        final int[] wrongNum = {sharedPre.getInt("wrongNum", 0)};
-        int cnt = sharedPre.getInt("word"+Data.getRandNum(),0);
-        cnt++;
-        editor.putInt("word"+Data.getRandNum(),cnt);
-        editor.apply();
+
         knowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,9 +55,14 @@ public class ReciteFragment extends Fragment {
         unknowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int[] wrongNum = {sharedPre.getInt("wrongNum", 0)};      //获取错误单词的个数
                 wrongNum[0]++;
                 editor.putInt("wrongNum", wrongNum[0]);
-                editor.putInt("wrong" + wrongNum[0], Data.getRandNum());
+                editor.putInt("wrong" + wrongNum[0], Data.getNowWordIndex());   //wrong1,表示第1一个错误单词,它映射的是单词列表的下标
+                String wrongiNum = "wrong" + Data.getNowWordIndex() + "Num";
+                editor.putInt(wrongiNum,sharedPre.getInt(wrongiNum,0)+1);   //wrong1,表示第1一个错误单词,它映射的是单词列表的下标
+                String word = Data.getWord(Data.getNowWordIndex());
+
                 showNextWord();
             }
         });
@@ -74,22 +75,21 @@ public class ReciteFragment extends Fragment {
         });
     }
     private void updateWordCount() {
-        int cnt = sharedPre.getInt("word" + Data.getRandNum(), 0);
-        cnt++;
-        editor.putInt("word" + Data.getRandNum(), cnt);
+        int cnt = sharedPre.getInt("word" + Data.getNowWordIndex(), 0);     //获取当前单词出现的次数,进行更新
+        editor.putInt("word" + Data.getNowWordIndex(), ++cnt);
         editor.apply();
     }
 
     private void showNextWord() {
-        Data.setRandNum();
+        Data.setNewWord();          //获取新的随机单词
         updateWordCount();
-        showTextByFlag(flag);
-        wordText.setText(Data.getWord(Data.getRandNum()));
+        wordText.setText(Data.getWord(Data.getNowWordIndex()));     //设置单词
+        showTextByFlag(flag);                                       //设置单词释义
     }
 
     private void showTextByFlag(boolean flag) {
         if (flag){
-            definitionText.setText(Data.getPron(Data.getRandNum())+"\n"+Data.getwordDefine(Data.getRandNum()));
+            definitionText.setText(Data.getPron(Data.getNowWordIndex())+"\n"+Data.getwordDefine(Data.getNowWordIndex()));
         }else {
             definitionText.setText("");
         }
